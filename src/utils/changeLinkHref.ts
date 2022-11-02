@@ -11,7 +11,9 @@ function changeLinkHref(content: string) {
   $("a").map((index, item) => {
     let href = $(item).attr("href") + "";
     if (href.includes("juejin.cn") && href.includes("target=")) {
-      $(item).attr("href", href.split("target=")[1]);
+      $(item).attr("href", decodeURIComponent(href.split("target=")[1]));
+    } else {
+      $(item).attr("href", decodeURIComponent(href));
     }
   });
 

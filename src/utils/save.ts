@@ -8,8 +8,9 @@ import language from "./language";
 import axios from "axios";
 import uploadImage from "./uploadImage";
 import fs from "fs";
-import { Page } from "puppeteer";
 import allowSetCover from "./allowSetCover";
+import changeLinkHref from "./changeLinkHref";
+import { setCount } from "../modules/count";
 
 let tagListawait = [] as { id: number; name: string }[];
 mysql.query(`select id,name from tag;`).then(([rows]) => {
@@ -37,7 +38,6 @@ async function save(url: string) {
     .catch(() => false as false);
 
   if (!status) {
-    // await page.close();
     return;
   }
 
@@ -60,27 +60,15 @@ async function save(url: string) {
     })
     .filter(item => item);
   if (!_tags.length) {
-    // await page.close();
     console.log(`tag数量为0，不保存`);
     return;
   }
-  console.log("开始获取文章数据，并判断是否重复");
   let $ = load(await page.content());
   let title = $("title").eq(0).text().replace(/\n/g, "").replace(" - 掘金", "").substring(0, 190);
 
-  let [row] = await mysql.execute(`SELECT id from article WHERE title=? or reprint=?;`, [
-    title,
-    url,
-  ]);
-  if ((row as any).length) {
-    // await page.close();
-    console.log("重复");
-    return;
-  }
-
   let coverSrc = $(".article-hero").attr("src");
   let content = await switchImagePath(
-    language($(".markdown-body").remove("style").html() as string)
+    changeLinkHref(language($(".markdown-body").remove("style").html() as string))
   );
 
   let description = $("meta[name=description]").attr("content")?.substring(0, 190) || null;
@@ -101,7 +89,7 @@ async function save(url: string) {
       reprint: url,
     })
     .then(res => {
-      console.log("创建文章成功");
+      setCount();
       return res.data;
     })
     .catch(err => {
@@ -111,7 +99,6 @@ async function save(url: string) {
     })
     .finally(async () => {
       console.log(`结束:${url} 的抓取`);
-      // await (page as Page).close();
     });
 }
 export default save;

@@ -34,7 +34,7 @@ async function switchImagePath(content: string) {
       $("img").eq(index).remove();
       console.log("下载失败");
     }
-    console.log(`图片切换进度  ${images.findIndex(item => item == path)+1}/${images.length}`);
+    console.log(`图片切换进度  ${images.findIndex(item => item == path) + 1}/${images.length}`);
   }
   console.log("图片切换完成");
   await sleep(random(1500, 2100));

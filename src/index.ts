@@ -1,7 +1,7 @@
 import axios from "axios";
 import Browser from "./modules/browser";
 import tags from "./utils/tags";
-import loadMoreData from "./utils/loadMoreData";
+import loadMoreData from "./utils/getMoreData";
 import save from "./utils/save";
 import config from "./config";
 import sleep from "./utils/sleep";
@@ -14,6 +14,8 @@ axios.interceptors.request.use(c => {
   ] = `Google Chrome";v="105", "Not)A;Brand";v="8", "Chromium";v="105"`;
   (c as any).headers["User-Agent"] =
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36";
+  (c as any).headers["origin"] = "https://juejin.cn/";
+  (c as any).headers["referer"] = "https://juejin.cn/";
   return c;
 });
 let errCount = 0;
@@ -38,7 +40,10 @@ async function start() {
         } catch (error) {
           console.log(`${_href}出错`);
           errCount++;
-          if (errCount > 20) process.exit(1);
+          //累计20个错误时停止抓球
+          if (errCount > 20) {
+            throw new Error("已经累计20个错误了");
+          }
           continue; //防止save运行错误
         }
       }

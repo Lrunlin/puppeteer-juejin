@@ -13,7 +13,14 @@ async function upload(fileName: string | null, target?: "article" | "cover") {
   formData.append("image", fs.createReadStream(fileName));
   return await axios
     .post(`/static/${target}`, formData)
-    .then(res => res?.data?.data?.file_name)
+    .then(res => {
+      try {
+        fs.unlinkSync(fileName);
+      } catch (error) {
+        console.log(`删除失败 ${fileName}`);
+      }
+      return res?.data?.data?.file_name;
+    })
     .catch(err => {
       fs.writeFileSync(
         `log/${+new Date()}.txt`,

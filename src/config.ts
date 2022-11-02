@@ -5,11 +5,11 @@ export default {
   token: ``,
   mysql: {
     port: 3306,
-    host: "localhost",
-    user: "root",
+    host: "",
+    user: "blog",
     database: "blog",
     password: "",
   },
   /** 部署的服务端端口*/
-  apiHost: "http://127.0.0.1:3000",
+  apiHost: "http://localhost:3000",
 };

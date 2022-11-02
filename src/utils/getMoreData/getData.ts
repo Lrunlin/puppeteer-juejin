@@ -9,7 +9,7 @@ async function loadMoreData(page: Page): Promise<item[]> {
       // let taggetHeight = height + 60; //目标高度(测试时使用60)
       let timer = setInterval(() => {
         window.scrollBy(0, (height += 60));
-        if (height >= taggetHeight - 30) {
+        if (height >= taggetHeight - 90) {
           let href = [] as item[];
           document.querySelectorAll(".entry-list .entry a.title").forEach(item => {
             href.push({ href: (item as any).href, title: (item as any).innerText });

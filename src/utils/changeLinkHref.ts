@@ -1,5 +1,3 @@
-import sleep from "./sleep";
-import downLoadImgae from "./downLoadImgae";
 import { load } from "cheerio";
 
 /**

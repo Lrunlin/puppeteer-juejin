@@ -16,9 +16,6 @@ async function download(url: string) {
       let ext = mime.getExtension(res.headers["content-type"]);
       let imagePath = `public/${v4()}.${ext}`;
       fs.writeFileSync(imagePath, _buffer);
-      setTimeout(() => {
-        fs.unlinkSync(imagePath);
-      }, 1500000);
       return imagePath;
     })
     .catch(err => {

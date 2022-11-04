@@ -1,6 +1,5 @@
 # 说明
-
-**程序主要用于[BLOG](https://github.com/Lrunlin/blog)项目，对爬取的成功物进行直接的数据库保存**
+**程序主要用于[BLOG](https://github.com/Lrunlin/blog)项目，对爬取的成果物进行直接的数据库保存**
 
 Node.js 爬虫,程序为掘金社区的文章爬取,使用 Node.js 程序编写需要依靠 puppeteer 和 cheerio,使用 puppeteer 通过浏览器模拟用户行为可以防止访问速度过快而遭到限流或者验证。
 

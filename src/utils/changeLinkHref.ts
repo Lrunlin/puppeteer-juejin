@@ -6,8 +6,12 @@ import { load } from "cheerio";
 function changeLinkHref(content: string) {
   console.log("开始修改超链接路径");
   let $ = load(content);
-  $("a").map((index, item) => {
+  $("a").each((index, item) => {
     let href = $(item).attr("href") + "";
+    if (href == "https://link.juejin.cn/?target=") {
+      $(item).remove();
+      return;
+    }
     if (href.includes("juejin.cn") && href.includes("target=")) {
       $(item).attr("href", decodeURIComponent(href.split("target=")[1]));
     } else {

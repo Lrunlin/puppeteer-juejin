@@ -10,6 +10,7 @@ import uploadImage from "./uploadImage";
 import fs from "fs";
 import allowSetCover from "./allowSetCover";
 import changeLinkHref from "./changeLinkHref";
+import removeJuejinTitle from "./removeJuejinTitle";
 import { setCount } from "../modules/count";
 
 let tagListawait = [] as { id: number; name: string }[];
@@ -68,7 +69,9 @@ async function save(url: string) {
 
   let coverSrc = $(".article-hero").attr("src");
   let content = await switchImagePath(
-    changeLinkHref(language($(".markdown-body").remove("style").html() as string))
+    removeJuejinTitle(
+      changeLinkHref(language($(".markdown-body").remove("style").html() as string))
+    )
   );
 
   let description = $("meta[name=description]").attr("content")?.substring(0, 190) || null;

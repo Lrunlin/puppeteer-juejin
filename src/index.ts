@@ -1,3 +1,5 @@
+// https://cloud.tencent.com/developer/article/1676868
+// https://juejin.cn/post/6844903565064929293#heading-13
 import axios from "axios";
 import Browser from "./modules/browser";
 import tags from "./utils/tags";
@@ -6,18 +8,15 @@ import save from "./utils/save";
 import config from "./config";
 import sleep from "./utils/sleep";
 
-axios.defaults.baseURL = config.apiHost;
 axios.interceptors.request.use(c => {
-  (c as any).headers.authorization = config.token;
-  (c as any).headers[
-    "sec-ch-ua"
-  ] = `Google Chrome";v="105", "Not)A;Brand";v="8", "Chromium";v="105"`;
-  (c as any).headers["User-Agent"] =
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36";
-  (c as any).headers["origin"] = "https://juejin.cn/";
-  (c as any).headers["referer"] = "https://juejin.cn/";
-  return c;
+  return Object.assign(c, {
+    "sec-ch-ua": `Chromium";v="106", "Google Chrome";v="106", "Not;A=Brand";v="99"`,
+    "User-Agent": `Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Mobile Safari/537.36`,
+    origin: "https://juejin.cn/",
+    referer: "https://juejin.cn/",
+  });
 });
+
 let errCount = 0;
 async function start() {
   let browser = await Browser();

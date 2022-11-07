@@ -1,8 +1,8 @@
-import sleep from "./sleep";
-import downLoadImgae from "./downLoadImgae";
+import sleep from "../utils/sleep";
+import downLoadImgae from "../utils/downLoadImgae";
 import { load } from "cheerio";
-import uploadImage from "./uploadImage";
-import random from "./random";
+import uploadImage from "../utils/uploadImage";
+import random from "../utils/random";
 
 /**
  * todo 将爬取的文章中的图片上传OSS并且置换其中的路径

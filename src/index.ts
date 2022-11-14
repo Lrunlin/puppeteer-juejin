@@ -5,8 +5,15 @@ import Browser from "./modules/browser";
 import tags from "./utils/tags";
 import loadMoreData from "./utils/getMoreData";
 import save from "./utils/save";
-import config from "./config";
 import sleep from "./utils/sleep";
+
+const fa = console.log;
+console.log = function () {
+  let time = new Date();
+  fa(`${time.getHours()}:${time.getMinutes()}:${time.getSeconds()}  `, ...arguments);
+};
+
+
 
 axios.interceptors.request.use(c => {
   return Object.assign(c, {

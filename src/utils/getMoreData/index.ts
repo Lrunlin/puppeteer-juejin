@@ -1,20 +1,19 @@
 import type { Page } from "puppeteer";
-import mysql from "../../modules/mysql";
-
+import fs from "fs";
 import getData from "./getData";
 /**
  * 查询数据库内容进行初步去重
  * 传递链接和title列表，返回链接列表
  */
-async function dataFilter(data: { href: string; title: string }[]): Promise<string[]> {
+async function dataFilter(data: string[]): Promise<string[]> {
   let hrefHub: string[] = [];
+  let dir = fs.readdirSync("public");
   for (let index = 0; index < data.length; index++) {
-    const { href, title } = data[index];
-    let [row] = await mysql.execute(`SELECT id from article WHERE title=? or reprint=?;`, [
-      title,
-      href,
-    ]);
-    if (!(row as any[]).length) hrefHub.push(href);
+    const href = data[index];
+    let id = href.replace("https://juejin.cn/post/", "");
+    if (!dir.includes(id)) {
+      hrefHub.push(href);
+    }
   }
   return hrefHub;
 }

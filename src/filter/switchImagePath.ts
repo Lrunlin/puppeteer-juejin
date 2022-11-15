@@ -1,12 +1,10 @@
 import sleep from "../utils/sleep";
 import downLoadImgae from "../utils/downLoadImgae";
 import { load } from "cheerio";
-import uploadImage from "../utils/uploadImage";
 import random from "../utils/random";
 
 /**
- * todo 将爬取的文章中的图片上传OSS并且置换其中的路径
- * ?上传至server文件夹的接口
+ * todo 将爬取的文章中的图片保存
  * */
 async function switchImagePath(content: string) {
   let $ = load(content);
@@ -19,23 +17,18 @@ async function switchImagePath(content: string) {
   for (let path of images) {
     let index = images.findIndex(item => item == path);
     await sleep(random(1500, 2100));
-    let _imagePath = await downLoadImgae(path);
+
+    let _imagePath = await downLoadImgae(path, "article");
     if (_imagePath) {
-      console.log("下载成功，开始上传");
-      let newImagePath = await uploadImage(_imagePath as string, "article");
-      if (newImagePath) {
-        $("img").eq(index).attr("src", newImagePath);
-        console.log("上传并置换成功");
-      } else {
-        $("img").eq(index).remove();
-        console.log("上传失败");
-      }
+      console.log("下载成功");
+      $("img").eq(index).attr("src", _imagePath);
     } else {
       $("img").eq(index).remove();
       console.log("下载失败");
     }
     console.log(`图片切换进度  ${images.findIndex(item => item == path) + 1}/${images.length}`);
   }
+
   console.log("图片切换完成");
   await sleep(random(1500, 2100));
   return $("body").html() as string;

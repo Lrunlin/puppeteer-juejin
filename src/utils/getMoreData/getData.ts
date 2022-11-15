@@ -1,7 +1,6 @@
 import type { Page } from "puppeteer";
-type item = { href: string; title: string };
 /** 加载更多信息并返回列表*/
-async function loadMoreData(page: Page): Promise<item[]> {
+async function loadMoreData(page: Page): Promise<string[]> {
   return (await page.evaluate(() => {
     return new Promise((resolve, reject) => {
       let height = document.documentElement.scrollTop + document.documentElement.clientHeight;
@@ -10,16 +9,16 @@ async function loadMoreData(page: Page): Promise<item[]> {
       let timer = setInterval(() => {
         window.scrollBy(0, (height += 60));
         if (height >= taggetHeight - 90) {
-          let href = [] as item[];
+          let href = [] as string[];
           document.querySelectorAll(".entry-list .entry a.title").forEach(item => {
-            href.push({ href: (item as any).href, title: (item as any).innerText });
+            href.push((item as any).href);
           });
           clearInterval(timer);
           resolve(href);
         }
       }, 700);
     });
-  })) as item[];
+  })) as string[];
 }
 
 export default loadMoreData;

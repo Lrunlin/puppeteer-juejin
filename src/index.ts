@@ -1,5 +1,3 @@
-// https://cloud.tencent.com/developer/article/1676868
-// https://juejin.cn/post/6844903565064929293#heading-13
 import axios from "axios";
 import Browser from "./modules/browser";
 import tags from "./utils/tags";
@@ -12,8 +10,6 @@ console.log = function () {
   let time = new Date();
   fa(`${time.getHours()}:${time.getMinutes()}:${time.getSeconds()}  `, ...arguments);
 };
-
-
 
 axios.interceptors.request.use(c => {
   return Object.assign(c, {
@@ -38,15 +34,16 @@ async function start() {
 
       let href = await loadMoreData(indexPage);
       indexPage.close();
+      await sleep(1000);
       console.log(`开始抓取${tagHref.text} ，共 ${href.length} 条`);
       // 对单个文章逐个抓取
       for (const _href of href) {
         try {
           await save(_href);
         } catch (error) {
-          console.log(`${_href}出错`);
+          console.log(`${_href}出错`, "\n", error);
           errCount++;
-          //累计20个错误时停止抓球
+          //累计20个错误时停止抓取
           if (errCount > 20) {
             throw new Error("已经累计20个错误了");
           }

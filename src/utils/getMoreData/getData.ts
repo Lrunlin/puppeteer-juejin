@@ -4,8 +4,8 @@ async function loadMoreData(page: Page): Promise<string[]> {
   return (await page.evaluate(() => {
     return new Promise((resolve, reject) => {
       let height = document.documentElement.scrollTop + document.documentElement.clientHeight;
-      let taggetHeight = height + 4000; //目标高度
-      // let taggetHeight = height + 60; //目标高度(测试时使用60)
+      let taggetHeight = height + 60; //目标高度(测试时使用60)
+      
       let timer = setInterval(() => {
         window.scrollBy(0, (height += 60));
         if (height >= taggetHeight - 90) {

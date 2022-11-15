@@ -7,18 +7,17 @@ import language from "../filter/language";
 import fs from "fs";
 import changeLinkHref from "../filter/changeLinkHref";
 import removeJuejinTitle from "../filter/removeJuejinTitle";
+import articleID from "../store/articleID";
 
 async function save(url: string) {
   console.log(`开始:${url} 的抓取`);
   let browser = await Browser();
   await sleep(800);
   // 如果有掘金文章页面，就不在创建
-  let page =
-    (await (await browser.pages()).find(item => item.url().startsWith("https://juejin.cn/post"))) ||
-    (await browser
-      .newPage()
-      .then(r => r)
-      .catch(() => false as false));
+  let page = await browser
+    .newPage()
+    .then(r => r)
+    .catch(() => false as false);
 
   if (!page) {
     return;
@@ -32,6 +31,7 @@ async function save(url: string) {
   if (!status) {
     return;
   }
+  articleID.set(url.replace("https://juejin.cn/post/", ""));
 
   await page.waitForSelector("main");
   await sleep(1678);
@@ -85,7 +85,7 @@ async function save(url: string) {
   fs.writeFileSync(`public/${id}/reprint.txt`, url);
   if (coverSrc) await downLoadImgae(coverSrc, "cover");
   console.log(`结束:${url} 的抓取`);
-
+  await page.close();
   return true;
 }
 export default save;

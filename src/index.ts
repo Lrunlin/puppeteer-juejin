@@ -32,7 +32,8 @@ async function start() {
 
       console.log(`打开浏览器跳转Tag(${tagHref.text})`);
 
-      let href = await loadMoreData(indexPage);
+      let href = await loadMoreData(indexPage)
+      
       indexPage.close();
       await sleep(1000);
       console.log(`开始抓取${tagHref.text} ，共 ${href.length} 条`);

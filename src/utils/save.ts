@@ -22,6 +22,8 @@ async function save(url: string) {
     .catch(() => false as false);
 
   if (!status) {
+    console.log(`响应了错误的Http状态码，等待2分钟`);
+    await sleep(120_000);
     await page.close();
     return;
   }
@@ -80,6 +82,7 @@ async function save(url: string) {
   if (coverSrc) await downLoadImgae(coverSrc, "cover");
   console.log(`结束:${url} 的抓取`);
   await page.close();
+  await sleep(1200);
   return true;
 }
 export default save;

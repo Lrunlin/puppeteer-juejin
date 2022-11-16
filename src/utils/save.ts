@@ -14,14 +14,7 @@ async function save(url: string) {
   let browser = await Browser();
   await sleep(800);
   // 如果有掘金文章页面，就不在创建
-  let page = await browser
-    .newPage()
-    .then(r => r)
-    .catch(() => false as false);
-
-  if (!page) {
-    return;
-  }
+  let page = await browser.newPage();
 
   let status = await page
     .goto(url, { timeout: 0 })
@@ -29,6 +22,7 @@ async function save(url: string) {
     .catch(() => false as false);
 
   if (!status) {
+    await page.close();
     return;
   }
   articleID.set(url.replace("https://juejin.cn/post/", ""));

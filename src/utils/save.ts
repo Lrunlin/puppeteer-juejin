@@ -22,9 +22,9 @@ async function save(url: string) {
     .catch(() => false as false);
 
   if (!status) {
+    await page.close();
     console.log(`响应了错误的Http状态码，等待2分钟`);
     await sleep(120_000);
-    await page.close();
     return;
   }
   articleID.set(url.replace("https://juejin.cn/post/", ""));

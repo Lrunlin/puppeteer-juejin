@@ -4,12 +4,13 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "nodemon --watch ./src -e ts --exec ts-node ./src/index.ts",
-    "start": "tsc&&node dist/src/index.js"
+    "dev": "cross-env ENV=development nodemon --watch ./src -e ts --exec ts-node ./src/index.ts",
+    "start": "tsc&&cross-env ENV=production node dist/src/index.js"
   },
   "dependencies": {
     "axios": "^0.27.2",
     "cheerio": "^1.0.0-rc.10",
+    "cross-env": "^7.0.3",
     "nodemon": "^2.0.14",
     "puppeteer": "^18.0.3",
     "sharp": "^0.30.1",
